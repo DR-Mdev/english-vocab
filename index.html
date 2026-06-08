@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocab DB</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F4F1;
+    --surface: #FFFFFF;
+    --border: #E2E0DA;
+    --border-light: #EEECE8;
+    --text: #1A1916;
+    --text-muted: #7A7870;
+    --text-faint: #B0AEA8;
+    --accent: #2D5BE3;
+    --accent-light: #EBF0FD;
+    --active-bg: #E8F5EE;
+    --active-text: #1A6E3C;
+    --script-bg: #EEF0FD;
+    --script-text: #2D40A8;
+    --passive-bg: #F2F2F0;
+    --passive-text: #6B6960;
+    --tag-bg: #F0EEE8;
+    --tag-text: #4A4840;
+    --header-bg: #1A1916;
+    --header-text: #F5F4F1;
+    --row-hover: #FAFAF8;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--header-text);
+    opacity: 0.9;
+  }
+
+  .topbar-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+
+  .topbar-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+  .csv-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    position: sticky;
+    top: 52px;
+    z-index: 90;
+  }
+
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    color: var(--text-faint);
+    font-size: 13px;
+    pointer-events: none;
+  }
+
+  .search-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    padding: 6px 10px 6px 30px;
+    width: 220px;
+    outline: none;
+    transition: border-color 0.15s, width 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+    width: 260px;
+  }
+
+  .search-input::placeholder { color: var(--text-faint); }
+
+  .toolbar-sep { width: 1px; height: 24px; background: var(--border); }
+
+  /* Status tabs */
+  .tabs { display: flex; gap: 2px; }
+
+  .tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.02em;
+  }
+
+  .tab:hover { background: var(--bg); color: var(--text); }
+
+  .tab.active {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Type filter */
+  .type-filter {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    padding: 5px 8px;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    padding-right: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23B0AEA8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  .toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  .sort-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .sort-btn:hover { background: var(--bg); color: var(--text); border-color: var(--text-muted); }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    padding: 16px 24px 80px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  thead tr {
+    background: var(--header-bg);
+  }
+
+  th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,244,241,0.5);
+    padding: 10px 14px;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  th:hover { color: rgba(245,244,241,0.85); }
+  th.sorted { color: rgba(245,244,241,0.9); }
+  th .sort-arrow { margin-left: 4px; opacity: 0.5; }
+  th.sorted .sort-arrow { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background 0.1s;
+  }
+
+  tbody tr:hover { background: var(--row-hover); }
+
+  td {
+    padding: 10px 14px;
+    vertical-align: top;
+    border-right: 1px solid var(--border-light);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  td:last-child { border-right: none; }
+
+  /* Column widths */
+  .col-expression { min-width: 180px; max-width: 220px; }
+  .col-type       { min-width: 100px; width: 110px; }
+  .col-source     { min-width: 200px; max-width: 280px; }
+  .col-meaning    { min-width: 220px; max-width: 300px; }
+  .col-mysentence { min-width: 200px; max-width: 280px; }
+  .col-status     { min-width: 80px; width: 90px; }
+
+  /* Expression cell */
+  .expr-text {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  /* Truncated cell with tooltip */
+  .truncated {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 12.5px;
+  }
+
+  .tooltip-wrap {
+    position: relative;
+    cursor: default;
+  }
+
+  .tooltip-wrap .tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 200;
+    background: var(--header-bg);
+    color: var(--header-text);
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    width: 320px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    pointer-events: none;
+  }
+
+  .tooltip-wrap:hover .tooltip { display: block; }
+
+  /* Type badge */
+  .badge-type {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    text-transform: lowercase;
+  }
+
+  /* Status badge */
+  .badge-status {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+  }
+
+  .badge-status.active   { background: var(--active-bg);  color: var(--active-text); }
+  .badge-status.script   { background: var(--script-bg);  color: var(--script-text); }
+  .badge-status.passive  { background: var(--passive-bg); color: var(--passive-text); }
+
+  /* My sentence (dash = empty) */
+  .my-sentence-empty { color: var(--text-faint); font-style: italic; font-size: 12px; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--text-faint);
+  }
+
+  .empty-state p { font-size: 13px; margin-top: 8px; }
+
+  /* ── ERROR BANNER ── */
+  .error-banner {
+    margin: 16px 24px 0;
+    padding: 12px 16px;
+    background: #FEF3F2;
+    border: 1px solid #FECDCA;
+    color: #B42318;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    display: none;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  .footer-path {
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .reload-btn {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.12s;
+  }
+
+  .reload-btn:hover { background: var(--header-bg); color: var(--header-text); border-color: var(--header-bg); }
+
+  /* highlight matched text */
+  mark {
+    background: #FFF3CD;
+    color: inherit;
+    padding: 0 1px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .topbar, .toolbar { padding: 0 12px; }
+    .table-wrap { padding: 12px 12px 80px; }
+    .search-input { width: 160px; }
+    .search-input:focus { width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-title">Vocab DB</span>
+  <div class="topbar-sep"></div>
+  <span class="topbar-count" id="row-count">— entries</span>
+  <div class="topbar-right">
+    <span class="csv-status" id="csv-status">Loading vocab.csv…</span>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" type="text" id="search" placeholder="Search expressions, meanings…" autocomplete="off">
+  </div>
+
+  <div class="toolbar-sep"></div>
+
+  <div class="tabs" id="status-tabs">
+    <button class="tab active" data-status="all">All</button>
+    <button class="tab" data-status="Active">Active</button>
+    <button class="tab" data-status="Script">Script</button>
+    <button class="tab" data-status="Passive">Passive</button>
+  </div>
+
+  <div class="toolbar-sep"></div>
+
+  <select class="type-filter" id="type-filter">
+    <option value="all">All types</option>
+  </select>
+
+  <div class="toolbar-right">
+    <button class="sort-btn" id="sort-az">A→Z</button>
+  </div>
+</div>
+
+<!-- ERROR -->
+<div class="error-banner" id="error-banner"></div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table id="vocab-table">
+    <thead>
+      <tr>
+        <th class="col-expression" data-col="expression">Expression <span class="sort-arrow">↕</span></th>
+        <th class="col-type"       data-col="type">Type <span class="sort-arrow">↕</span></th>
+        <th class="col-source"     data-col="source">Source sentence <span class="sort-arrow">↕</span></th>
+        <th class="col-meaning"    data-col="meaning">Meaning / Nuance <span class="sort-arrow">↕</span></th>
+        <th class="col-mysentence" data-col="mysentence">My sentence <span class="sort-arrow">↕</span></th>
+        <th class="col-status"     data-col="status">Status <span class="sort-arrow">↕</span></th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>CSV:</span>
+  <span class="footer-path" id="footer-path">vocab.csv</span>
+  <span id="footer-updated"></span>
+  <button class="reload-btn" onclick="loadCSV()">↺ Reload</button>
+</div>
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────
+  // CSVファイルのパス（HTMLと同じフォルダにvocab.csvを置く場合はこのまま）
+  const CSV_PATH = 'vocab.csv';
+
+  // ── STATE ────────────────────────────────────────────────
+  let allRows = [];
+  let sortCol = null;
+  let sortDir = 1; // 1=asc, -1=desc
+
+  // ── CSV PARSER ───────────────────────────────────────────
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return [];
+
+    const header = parseCSVLine(lines[0]);
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const vals = parseCSVLine(lines[i]);
+      if (vals.length < 2) continue;
+      rows.push({
+        expression: vals[0] || '',
+        type:       vals[1] || '',
+        source:     vals[2] || '',
+        meaning:    vals[3] || '',
+        mysentence: vals[4] || '',
+        status:     vals[5] || '',
+      });
+    }
+    return rows;
+  }
+
+  function parseCSVLine(line) {
+    const result = [];
+    let cur = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i+1] === '"') { cur += '"'; i++; }
+        else inQuotes = !inQuotes;
+      } else if (ch === ',' && !inQuotes) {
+        result.push(cur.trim());
+        cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    result.push(cur.trim());
+    return result;
+  }
+
+  // ── LOAD CSV ─────────────────────────────────────────────
+  async function loadCSV() {
+    const statusEl = document.getElementById('csv-status');
+    const errorEl  = document.getElementById('error-banner');
+    statusEl.textContent = 'Loading…';
+    errorEl.style.display = 'none';
+
+    try {
+      const res = await fetch(CSV_PATH + '?t=' + Date.now());
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      const text = await res.text();
+      allRows = parseCSV(text);
+
+      const now = new Date();
+      statusEl.textContent = `Loaded ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+      document.getElementById('footer-updated').textContent =
+        `Last loaded: ${now.toLocaleTimeString('ja-JP')}`;
+
+      buildTypeFilter();
+      renderTable();
+    } catch (err) {
+      statusEl.textContent = 'Error';
+      errorEl.style.display = 'block';
+      errorEl.textContent =
+        `⚠ CSVを読み込めませんでした: ${err.message}\n` +
+        `→ GitHub Pages 上で開いているか確認してください。ローカルファイルとして開いた場合は読み込めません。`;
+    }
+  }
+
+  // ── TYPE FILTER ──────────────────────────────────────────
+  function buildTypeFilter() {
+    const types = [...new Set(allRows.map(r => r.type).filter(Boolean))].sort();
+    const sel = document.getElementById('type-filter');
+    sel.innerHTML = '<option value="all">All types</option>';
+    types.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t;
+      opt.textContent = t;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ── FILTER + SORT ────────────────────────────────────────
+  function getFiltered() {
+    const q      = document.getElementById('search').value.toLowerCase().trim();
+    const status = document.querySelector('.tab.active')?.dataset.status || 'all';
+    const type   = document.getElementById('type-filter').value;
+
+    let rows = allRows.filter(r => {
+      if (status !== 'all' && r.status !== status) return false;
+      if (type !== 'all' && r.type !== type) return false;
+      if (q) {
+        const haystack = [r.expression, r.source, r.meaning, r.mysentence].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    });
+
+    if (sortCol) {
+      rows = [...rows].sort((a, b) => {
+        const av = a[sortCol] || '';
+        const bv = b[sortCol] || '';
+        return av.localeCompare(bv, 'ja') * sortDir;
+      });
+    }
+
+    return rows;
+  }
+
+  // ── HIGHLIGHT ────────────────────────────────────────────
+  function hl(text, q) {
+    if (!q) return escHtml(text);
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return escHtml(text);
+    return escHtml(text.slice(0, idx)) +
+           '<mark>' + escHtml(text.slice(idx, idx + q.length)) + '</mark>' +
+           escHtml(text.slice(idx + q.length));
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── RENDER ───────────────────────────────────────────────
+  function renderTable() {
+    const rows = getFiltered();
+    const q    = document.getElementById('search').value.toLowerCase().trim();
+    const tbody = document.getElementById('tbody');
+
+    document.getElementById('row-count').textContent =
+      rows.length === allRows.length
+        ? `${allRows.length} entries`
+        : `${rows.length} / ${allRows.length} entries`;
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `
+        <tr><td colspan="6">
+          <div class="empty-state">
+            <div style="font-size:24px;opacity:.3">◯</div>
+            <p>No entries match your filter.</p>
+          </div>
+        </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows.map(r => {
+      const statusClass = r.status.toLowerCase();
+      const isEmpty = !r.mysentence || r.mysentence === '-';
+      return `
+        <tr>
+          <td class="col-expression">
+            <div class="expr-text">${hl(r.expression, q)}</div>
+          </td>
+          <td class="col-type">
+            <span class="badge-type">${escHtml(r.type)}</span>
+          </td>
+          <td class="col-source">
+            <div class="tooltip-wrap">
+              <div class="truncated">${hl(r.source, q)}</div>
+              <div class="tooltip">${escHtml(r.source)}</div>
+            </div>
+          </td>
+          <td class="col-meaning">
+            <div class="tooltip-wrap">
+              <div class="truncated">${hl(r.meaning, q)}</div>
+              <div class="tooltip">${escHtml(r.meaning)}</div>
+            </div>
+          </td>
+          <td class="col-mysentence">
+            ${isEmpty
+              ? '<span class="my-sentence-empty">—</span>'
+              : `<span>${hl(r.mysentence, q)}</span>`}
+          </td>
+          <td class="col-status">
+            <span class="badge-status ${statusClass}">${escHtml(r.status)}</span>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  // ── EVENTS ───────────────────────────────────────────────
+  document.getElementById('search').addEventListener('input', renderTable);
+
+  document.getElementById('status-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  });
+
+  document.getElementById('type-filter').addEventListener('change', renderTable);
+
+  // Column header sort
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      if (sortCol === col) {
+        sortDir *= -1;
+      } else {
+        sortCol = col;
+        sortDir = 1;
+      }
+      document.querySelectorAll('th').forEach(t => t.classList.remove('sorted'));
+      th.classList.add('sorted');
+      th.querySelector('.sort-arrow').textContent = sortDir === 1 ? '↑' : '↓';
+      renderTable();
+    });
+  });
+
+  // A→Z shortcut button
+  document.getElementById('sort-az').addEventListener('click', () => {
+    sortCol = 'expression';
+    sortDir = 1;
+    document.querySelectorAll('th').forEach(t => {
+      t.classList.remove('sorted');
+      t.querySelector('.sort-arrow').textContent = '↕';
+    });
+    const th = document.querySelector('th[data-col="expression"]');
+    th.classList.add('sorted');
+    th.querySelector('.sort-arrow').textContent = '↑';
+    renderTable();
+  });
+
+  // ── INIT ─────────────────────────────────────────────────
+  loadCSV();
+</script>
+</body>
+</html>

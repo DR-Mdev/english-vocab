@@ -1,0 +1,39 @@
+Expression,Type,Source sentence,Meaning / Nuance,My sentence,Status
+enforcement knowledge,phrase,I wonder if the gap is actually shrinking or if enforcement knowledge will remain stubbornly local.,法律・規制・ルールが実際にどう運用・執行されるかについての実務知識。条文上の理解ではなく、現地当局・業界慣行・処分実例などを含むローカルな知識。,Enforcement knowledge is still very local in Japan.,Active
+stubbornly local,phrase,enforcement knowledge will remain stubbornly local.,なかなか一般化・グローバル化されず、現地特有のまま残るニュアンス。少し「しぶとく残る」という含み。,Some business practices remain stubbornly local.,Active
+stack,word,she doesnt have a stack yet,IT・就職文脈では、技術スキル、経験、語学力などを含む候補者としての武器一式。ここでは単なる技術スタックより広い意味。,She has a strong stack for a junior role.,Active
+strong base stack for juniors,phrase,strong base stack for juniors (no aws yet),ジュニア職として評価される基礎的な技術・スキルセットがあるという意味。AWSはまだないが、基礎は固いというニュアンス。,He has a strong base stack for a junior developer role.,Active
+How would she fare in those conditions?,sentence pattern,How would she fare in those conditions?,その条件で彼女はどの程度通用するか、うまくやっていけるか、見込みはどうかを聞く表現。fairではなくfare。,How would this product fare in the Japanese market?,Script
+fare,word,How would she fare in those conditions?,「うまくやる」「通用する」「結果がどうなる」という意味の動詞。就職・市場・競争環境などで使える。,How would we fare against local competitors?,Active
+influx,word,Does anyone know what's causing the sudden influx of Japanese markets?,人・企業・店舗・お金などが一気に流入すること。ここでは日本系マーケットが急に増えている現象。,We are seeing an influx of foreign SaaS companies entering Japan.,Active
+sudden influx of Japanese markets,phrase,what's causing the sudden influx of Japanese markets?,日本系スーパー・日本食材店のような店舗が急に街に増えていること。やや現象分析っぽい言い方。,The sudden influx of AI tools changed the competitive landscape.,Active
+indifferently belligerent,phrase,I'm just indifferently belligerent back.,感情的に怒るというより、冷めた態度で喧嘩腰・攻撃的に返すニュアンス。かなり口語的で癖のある表現。,-,Passive
+belligerent,word,I'm just indifferently belligerent back.,攻撃的な、喧嘩腰の、敵対的な。ビジネスでは強すぎる表現なので通常は受動理解でよい。,-,Passive
+as in,phrase,"as in, a teaching license in English, conferred to me by the nation of Japan, not a license to teach Japanese",誤解されそうな言葉を「つまり」「ここで言っているのは」と補足説明する表現。,"We need local support, as in someone who can handle Japanese customer communication.",Script
+conferred to me by,phrase,conferred to me by the nation of Japan,資格・称号・学位などが正式に授与されたという意味。ややフォーマル。,-,Passive
+below the belt,idiom,Hahaha below the belt.,ボクシング由来で、反則気味・卑怯・言いすぎ・痛いところを突くという意味。笑いがあるので「それは反則だろ（笑）」に近い。,That comment was a bit below the belt.,Active
+clique-y,word,getting clique-y with other japanese folks,内輪っぽい、身内だけで固まる、閉鎖的なグループを作るという意味。少しネガティブ。,The team became too clique-y after the reorganization.,Active
+getting clique-y with,phrase,getting clique-y with other japanese folks,特定の人たちだけで固まり、外部の人とあまり交流しない状態になること。,People can get clique-y when they feel insecure.,Active
+not-Japan,phrase,when they get placed in not-japan or go to not-japan for biz related conferences/events,日本ではない場所、つまり海外をカジュアルに言った表現。標準的なビジネス英語ではない。,-,Passive
+bonehead generalization,phrase,Setting aside the bonehead generalization,愚かな一般化、雑で浅はかな決めつけという意味。かなり批判的で強い表現。Born headではなくbonehead。,-,Passive
+bonehead,word,Setting aside the bonehead generalization,バカな、愚かな、浅はかなという意味の口語表現。相手をかなり強く批判するので使用注意。,-,Passive
+generalization,word,Setting aside the bonehead generalization,個別差を無視して大きくひとくくりにすること。ここでは「日本人はこうだ」のような雑な決めつけを指す。,We should avoid broad generalizations about the Japanese market.,Active
+setting aside,phrasal verb,Setting aside the bonehead generalization,その点はいったん脇に置くとして、という意味。議論の前提を一時的に外すときに使う。,"Setting aside the pricing issue, the proposal looks reasonable.",Script
+to the extent it's true,sentence pattern,"To the extent it's true, it's mostly just a self-fulfilling prophecy.",それが本当だとしても、その範囲では、という慎重な言い方。全面的に認めず、限定的に受け入れる表現。,"To the extent this is true, we need to adjust our sales process.",Script
+self-fulfilling prophecy,idiom,it's mostly just a self-fulfilling prophecy.,そう思い込むことで行動が変わり、結果的にその思い込みが現実化すること。,"If we assume Japan is impossible, it becomes a self-fulfilling prophecy.",Active
+prophecy,word,it's mostly just a self-fulfilling prophecy.,予言。単体よりもself-fulfilling prophecyとして覚える方が実用的。,-,Passive
+cross-cultural communication,phrase,cross-cultural communication is an especially difficult hurdle,異文化間コミュニケーション。文化・言語・価値観の違いをまたぐ意思疎通。,Cross-cultural communication is a major part of market entry.,Active
+difficult hurdle,collocation,cross-cultural communication is an especially difficult hurdle,乗り越えるのが難しい障害・壁。challengeよりも「越えるべき壁」のイメージが強い。,Local hiring is often a difficult hurdle for foreign startups.,Active
+reinforce it,phrase,and you reinforce it as shown here.,既存の思い込み・傾向・問題をさらに強めるという意味。ここでは「あなたの発言がその思い込みを強化している」という批判。,We should not reinforce the customer's existing concerns.,Active
+enclaves,word,people in various countries who stay in their enclaves,飛び地、孤立した集団・区域。ここでは同じ国籍・民族・文化圏の人たちだけで固まるコミュニティ。,-,Passive
+stay in their enclaves,phrase,people in various countries who stay in their enclaves,現地社会や多様な人々と混ざらず、自分たちの内輪コミュニティに留まること。,Some expats stay in their enclaves and rarely interact with local businesses.,Active
+reclusive,word,become reclusive in diverse work or social settings,人との交流を避け、閉じこもりがちな状態。ここでは多様な職場・社交環境で内向きになるニュアンス。,-,Passive
+become reclusive,phrase,become reclusive in diverse work or social settings,社交的な場で関わりを避け、孤立しがちになること。やや心理状態を含む。,-,Passive
+assimilate to the new culture,phrase,never assimilate to the new culture,新しい文化に同化・適応すること。ここでは移住先や海外環境に馴染まないという意味。,It takes time to assimilate to a new business culture.,Active
+gravitate towards,phrase,people just tend to gravitate towards what they immediately know,自然と慣れたもの・よく知っているものに向かう。意識的な選択というより心理的傾向。,Buyers tend to gravitate towards vendors they already know.,Active
+come out of their comfort zones,phrase,might need some time to come out of their comfort zones,慣れた安全圏から出ること。新しい人・場所・考え方に慣れるまで時間が必要というニュアンス。,It takes time for local partners to come out of their comfort zones.,Active
+opening up to new people places and ideas,phrase,not so flexible when it comes to opening up to new people places and ideas,新しい人・場所・考え方に対して心を開く、受け入れるという意味。文化的な柔軟性の話。,Some organizations are slow to open up to new ideas.,Active
+rigid in many ways,phrase,Japan tends to be rigid in many ways,多くの面で硬直的・柔軟性が低いという意味。かなり一般化した表現なので使い方に注意。,The procurement process can be rigid in many ways.,Active
+unwritten and unspoken societal rules,phrase,there are lots of unwritten and unspoken societal rules that one has to follow,明文化されていないが守るべき社会的ルール。日本の空気・慣習・暗黙の了解に近い。,Japan has many unwritten and unspoken business rules.,Active
+break away from that,phrasal verb,It could be hard for them to break away from that,既存の習慣・文化・考え方から抜け出すこと。ここでは内向きな行動様式から離れる難しさ。,It is hard for companies to break away from old sales practices.,Active
+integrating foreign workers into,phrase,whether integrating foreign workers into their own companies,外国人労働者を自社に受け入れ、組織の一部として機能させること。単なる採用よりも定着・組織適応を含む。,Integrating foreign workers into local teams requires clear communication.,Script
